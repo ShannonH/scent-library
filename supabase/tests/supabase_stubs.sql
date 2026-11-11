@@ -34,6 +34,10 @@ grant usage on schema storage to anon, authenticated;
 grant all on storage.objects to authenticated;
 grant execute on function storage.foldername(text) to anon, authenticated;
 
--- Supabase grants table privileges to these roles by default; RLS does the filtering.
-grant usage on schema public to anon, authenticated;
+-- Mimic a project created with "Automatically expose new tables" turned OFF:
+-- no default table privileges, so the migrations must grant what the app needs.
+-- (Set PGTEST_AUTO_EXPOSE=1 to test the "on" setting instead.)
+grant usage on schema public to anon;
+\if :{?auto_expose}
 alter default privileges in schema public grant all on tables to anon, authenticated;
+\endif

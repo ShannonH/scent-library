@@ -12,6 +12,6 @@ initdb -D "$TMP/data" -U postgres -A trust >/dev/null
 pg_ctl -D "$TMP/data" -o "-p $PORT -k $TMP -c listen_addresses=''" -l "$TMP/log" -w start >/dev/null
 
 run() { psql -h "$TMP" -p "$PORT" -U postgres -d postgres -v ON_ERROR_STOP=1 -q "$@"; }
-run -f "$ROOT/supabase/tests/supabase_stubs.sql"
+if [ -n "${PGTEST_AUTO_EXPOSE:-}" ]; then run -v auto_expose=1 -f "$ROOT/supabase/tests/supabase_stubs.sql"; else run -f "$ROOT/supabase/tests/supabase_stubs.sql"; fi
 for f in "$ROOT"/supabase/migrations/*.sql; do run -f "$f"; done
 run -f "$ROOT/supabase/tests/rls_test.sql"

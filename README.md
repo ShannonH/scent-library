@@ -116,12 +116,17 @@ npm run test:rls
 
 ## Set up Supabase
 
-1. Create a free project at [supabase.com](https://supabase.com).
-2. **Database schema**: open the SQL editor, paste
-   [`supabase/migrations/20261111000000_init.sql`](supabase/migrations/20261111000000_init.sql)
-   and run it. (Or, with the Supabase CLI: `supabase link` then `supabase db push`.)
-   This creates the tables, turns on row-level security, and creates a private
-   `scent-photos` storage bucket with per-user folders.
+1. Create a free project at [supabase.com](https://supabase.com). Recommended
+   settings: keep **Enable Data API** on, turn **Automatically expose new
+   tables** off, and turn **Enable automatic RLS** on.
+2. **Database schema**: open the SQL editor and run each file in
+   [`supabase/migrations/`](supabase/migrations/) in order (oldest first). (Or,
+   with the Supabase CLI: `supabase link` then `supabase db push`.)
+   - `…_init.sql` creates the tables, turns on row-level security, and creates
+     a private `scent-photos` storage bucket with per-user folders.
+   - `…_grants.sql` gives signed-in users access to the tables (RLS still
+     limits them to their own rows). Needed when auto-expose is off; harmless
+     when it's on.
 3. **Auth → Providers**: Email is on by default; magic links work with no
    extra setup. The free tier’s built-in email sender is rate-limited, so for
    more than a few users add your own SMTP under Auth → SMTP settings.
