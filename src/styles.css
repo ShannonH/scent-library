@@ -587,3 +587,10 @@ dd {
   aspect-ratio: auto;
   height: 96px;
 }
+
+input.code-input {
+  font-size: 1.4rem;
+  letter-spacing: 0.3em;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}

@@ -60,6 +60,15 @@ export class SupabaseStore implements Store {
     });
     if (error) throw new Error(error.message);
   }
+  async verifyEmailCode(email: string, code: string) {
+    const { error } = await this.db.auth.verifyOtp({ email, token: code, type: 'email' });
+    if (error?.code === 'otp_expired' || /expired|invalid/i.test(error?.message ?? '')) {
+      throw new Error(
+        'That code didn’t work. It may have expired: send a new email and use the newest code.',
+      );
+    }
+    if (error) throw new Error(error.message);
+  }
   async signInWithProvider(provider: 'google' | 'apple') {
     const { error } = await this.db.auth.signInWithOAuth({
       provider,

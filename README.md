@@ -130,11 +130,16 @@ npm run test:rls
 3. **Auth → Providers**: Email is on by default; magic links work with no
    extra setup. The free tier’s built-in email sender is rate-limited, so for
    more than a few users add your own SMTP under Auth → SMTP settings.
-4. **Auth → URL configuration**:
+4. **Auth → Emails → Templates**: add the one-time code to both the
+   **Magic Link** and **Confirm signup** templates, for example
+   `<p>Or enter this code in the app: <strong>{{ .Token }}</strong></p>`.
+   The code is how people sign in from an iPhone home-screen app, which
+   doesn’t share storage with Safari (a clicked link signs in Safari instead).
+5. **Auth → URL configuration**:
    - Site URL: your Pages URL, e.g. `https://<your-github-username>.github.io/scent-library/`
    - Redirect URLs: the same URL, plus `http://localhost:5173/` for local dev.
-5. **Project settings → API**: copy the Project URL and the `anon` public key.
-6. Locally: copy `.env.example` to `.env.local` and fill in both values.
+6. **Project settings → API**: copy the Project URL and the `anon` public key.
+7. Locally: copy `.env.example` to `.env.local` and fill in both values.
 
 The anon key is designed to be public: it is shipped to every browser, and
 row-level security is what keeps each person’s rows private. **Never** put the

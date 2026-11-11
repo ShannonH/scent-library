@@ -68,6 +68,9 @@ export class LocalStore implements Store {
     this.signedIn = true;
     this.emit();
   }
+  async verifyEmailCode() {
+    throw new Error('Demo mode has no email codes. Press “Try the demo” instead.');
+  }
   async signInWithProvider() {
     await this.sendMagicLink();
   }

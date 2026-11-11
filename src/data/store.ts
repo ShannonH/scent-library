@@ -15,7 +15,13 @@ export interface Store {
 
   currentUser(): Promise<SessionUser | null>;
   onAuthChange(cb: (user: SessionUser | null) => void): void;
+  /** Emails a sign-in link and a one-time code (if the email template includes it). */
   sendMagicLink(email: string): Promise<void>;
+  /**
+   * Signs in with the code from that email. Needed for iPhone home-screen apps,
+   * which don't share storage with Safari, so a clicked link signs in Safari instead.
+   */
+  verifyEmailCode(email: string, code: string): Promise<void>;
   signInWithProvider(provider: 'google' | 'apple'): Promise<void>;
   signOut(): Promise<void>;
 
